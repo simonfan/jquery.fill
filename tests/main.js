@@ -8,7 +8,7 @@ require.config({
 		'backbone': 'components/backbone/backbone',
 
 		// the module files go here
-		'fill': '../fill',
+		'jquery.fill': '../jquery.fill',
 
 		// DEMO
 		'demo-main': 'demo',	// the main file for the demo
@@ -23,6 +23,9 @@ require.config({
 		'backbone': {
 			deps: ['underscore', 'jquery'],
 			exports: 'Backbone'
+		},
+		'jquery.fill': {
+			deps: ['jquery']
 		}
 	}
 });

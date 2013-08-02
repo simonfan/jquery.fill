@@ -10,6 +10,20 @@ define(['jquery','underscore'], function($, undef) {
 		'default': function($el, value) {
 			return $el.val(value);
 		},
+		'INPUT': function($el, value) {
+			/**
+			 * intercept only filling for checkboxes and radios
+			 * as the default jquery .val() method sets the checkboxes and radio input
+			 * values instead of checking them (if the value is not passed in as an array)
+			 */
+			var type = $el.prop('type');
+
+			if (type === 'checkbox' || type === 'radio') {
+				value = _.isArray(value) ? value : [ value ];
+			}
+			
+			return $el.val(value);
+		},
 		'IMG': function($el, value) {
 			// trigger a change event when changing the image src
 			return $el.prop('src', value).trigger('change', value);
