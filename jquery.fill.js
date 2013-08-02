@@ -8,7 +8,7 @@ define(['jquery','underscore'], function($, undef) {
 
 	var fillers = {
 		'default': function($el, value) {
-			return $el.val(value);
+			return $el.html(value);
 		},
 		'INPUT': function($el, value) {
 			/**
@@ -24,15 +24,15 @@ define(['jquery','underscore'], function($, undef) {
 			
 			return $el.val(value);
 		},
+		'SELECT': function($el, value) {
+			return $el.val(value);
+		},
 		'IMG': function($el, value) {
 			// trigger a change event when changing the image src
 			return $el.prop('src', value).trigger('change', value);
 		},
 		'A': function($el, value) {
 			return $el.prop('href', value)
-		},
-		'DIV': function($el, value) {
-			return $el.html(value);
 		}
 	};
 
