@@ -31,10 +31,23 @@ define(['jquery','underscore'], function($, undef) {
 			// trigger a change event when changing the image src
 			return $el.prop('src', value).trigger('change', value);
 		},
+	/*	
 		A: function($el, value) {
 			return $el.prop('href', value)
 		},
+	*/
 	};
+
+
+	/**
+	 * Fills the $el itself, based on tagname
+	 */
+	function fillEl($el, value) {
+		var tag = $el.prop('tagName'),
+			filler = tagFillers[ tag ] || tagFillers['default'];
+
+		filler($el, value);
+	}
 
 	/**
 	 * Fills an attribute from the $el.
@@ -61,20 +74,22 @@ define(['jquery','underscore'], function($, undef) {
 
 
 	$.fn.fill = function (valueMap) {
-		var _this = this;
+		var _this = this; 
 
-		if (typeof valueMap === 'object') {
+		if (typeof valueMap === 'string') {
+
+			/**
+			 * Single value
+			 */
+			fillEl($(this), valueMap);
+
+		} else if (typeof valueMap === 'object') {
 
 			/**
 			 * valueMap: {
 			 * 	data: selector,
-			 *	data: {
-			 * 	 
-			 *  }
 			 * }
-			 * 
 			 */
-
 
 			_.each(valueMap, function(value, selector) {
 
@@ -82,40 +97,25 @@ define(['jquery','underscore'], function($, undef) {
 				 * Try spliting the selector
 				 */
 				var split = _.map(selector.split('->'), function(str) {
-					return str.replace(/^\s+|\s+$/g,'');
-				});
+						return str.replace(/^\s+|\s+$/g,'');
+					}),
+					// selector is always the first
+					$el = _this.find(split[0]);
 
 
 				if (split.length > 1) {
 					/**
 					 * Split is successful, try to get the attribute filler
 					 */
-					var selector = split[0],
-						// string that defines which attribute to be filled
-						attributeSelector = split[1],
-						$el = _this.find(selector);
-
-					fillAttribute($el, attributeSelector, value);
-
+					fillAttribute($el, split[1], value);
 
 				} else {
 					/**
 					 * Split unsuccessful, 
 					 */
-					var $el = _this.find(selector),
-						tag = $el.prop('tagName'),
-						filler = tagFillers[ tag ] || tagFillers['default'];
-
-					filler($el, value);
+					fillEl($el, value);
 				}
 			})
-
-		} else {
-
-			/**
-			 * Single value
-			 */
-			var $el = $(this);
 
 		}
 		
