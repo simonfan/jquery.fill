@@ -41,6 +41,16 @@ define(['jquery','underscore'], function($, undef) {
 
 		if (typeof valueMap === 'object') {
 
+			/**
+			 * valueMap: {
+			 * 	data: selector,
+			 *	data: {
+			 * 	 
+			 *  }
+			 * }
+			 * 
+			 */
+
 
 			_.each(valueMap, function(value, selector) {
 				var $el = _this.find(selector),
@@ -49,6 +59,13 @@ define(['jquery','underscore'], function($, undef) {
 
 				filler($el, value);
 			})
+
+		} else {
+
+			/**
+			 * Single value
+			 */
+			var $el = $(this);
 
 		}
 		
