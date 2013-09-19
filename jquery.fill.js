@@ -99,8 +99,9 @@ define(['jquery','underscore'], function($, undef) {
 				var split = _.map(selector.split('->'), function(str) {
 						return str.replace(/^\s+|\s+$/g,'');
 					}),
-					// selector is always the first
-					$el = _this.find(split[0]);
+					// selector is always the first.
+					// if selector is '.' or 'root', it refers to the main $el itself.
+					$el = split[0] === '.' || split[0] === 'root' ? _this : _this.find(split[0]);
 
 
 				if (split.length > 1) {

@@ -1,5 +1,9 @@
 define(['jquery.fill'], function(undef) {
-	$('body').fill({
+
+
+
+	$('#container').fill({
+		'. -> style:background-color': 'blue',
 		'#display-div': 'New text',
 		'#display-div -> attr:data-status': 'filled',
 		'#display-div -> css:background-color': 'red',
