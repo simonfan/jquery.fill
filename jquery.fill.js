@@ -39,10 +39,6 @@ define(['jquery','underscore'], function($, undef) {
 	};
 
 
-
-
-
-
 	/**
 	 * Fills the $el itself, based on tagname
 	 */
@@ -77,42 +73,6 @@ define(['jquery','underscore'], function($, undef) {
 	}
 
 
-
-
-
-
-
-
-	/**
-	 * Decides whethet to fill $el or $el attribute
-	 */
-	function fill($mainEl, selector, value) {
-		/**
-		 * Try spliting the selector
-		 */
-		var split = _.map(selector.split('->'), function(str) {
-				return str.replace(/^\s+|\s+$/g,'');
-			}),
-			// selector is always the first.
-			// if selector is '.' or 'root', it refers to the main $el itself.
-			$el = split[0] === '.' || split[0] === 'root' ? $mainEl : $mainEl.find(split[0]);
-
-
-		if (split.length > 1) {
-			/**
-			 * Split is successful, try to get the attribute filler
-			 */
-			fillAttribute($el, split[1], value);
-
-		} else {
-			/**
-			 * Split unsuccessful, 
-			 */
-			fillEl($el, value);
-		}
-	}
-
-
 	$.fn.fill = function (valueMap) {
 		var _this = this; 
 
@@ -131,14 +91,30 @@ define(['jquery','underscore'], function($, undef) {
 			 * }
 			 */
 
-			_.each(valueMap, function(value, selector_or_selectors) {
+			_.each(valueMap, function(value, selector) {
 
-				if (_.isArray(selector_or_selectors)) {
-					_.each(selector_or_selectors, function(selector) {
-						fill(_this, selector, value);
-					});
+				/**
+				 * Try spliting the selector
+				 */
+				var split = _.map(selector.split('->'), function(str) {
+						return str.replace(/^\s+|\s+$/g,'');
+					}),
+					// selector is always the first.
+					// if selector is '.' or 'root', it refers to the main $el itself.
+					$el = split[0] === '.' || split[0] === 'root' ? _this : _this.find(split[0]);
+
+
+				if (split.length > 1) {
+					/**
+					 * Split is successful, try to get the attribute filler
+					 */
+					fillAttribute($el, split[1], value);
+
 				} else {
-					fill(_this, selector_or_selectors, value);
+					/**
+					 * Split unsuccessful, 
+					 */
+					fillEl($el, value);
 				}
 			})
 
